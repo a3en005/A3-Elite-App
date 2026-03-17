@@ -1,0 +1,115 @@
+name: Build & Release A3-Elite
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build — ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact: dist/*.exe
+          - os: macos-latest
+            platform: mac
+            artifact: dist/*.dmg
+          - os: ubuntu-latest
+            platform: linux
+            artifact: dist/*.AppImage
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Linux build deps
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm snapcraft fakeroot
+
+      - name: Build (${{ matrix.platform }})
+        run: npm run build:${{ matrix.platform }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # macOS code signing (optional — set in repo secrets)
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-elite-${{ matrix.platform }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
+            dist/*.zip
+          if-no-files-found: warn
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: A3-Elite ${{ github.ref_name }}
+          body: |
+            ## A3-Elite Market Intelligence ${{ github.ref_name }}
+
+            ### Downloads
+            | Platform | File | Notes |
+            |----------|------|-------|
+            | Windows | `A3-Elite Setup *.exe` | NSIS installer (recommended) |
+            | Windows | `A3-Elite *.exe` (portable) | No install needed |
+            | macOS | `A3-Elite-*.dmg` | Drag to Applications |
+            | Linux | `A3-Elite-*.AppImage` | Universal — `chmod +x` then run |
+            | Linux | `a3-elite_*.deb` | Debian / Ubuntu |
+
+            ### What's New
+            - ICT Smart Money Concepts analysis engine
+            - Unicorn Model, Order Blocks, FVGs, Breaker Blocks
+            - Live forex + crypto prices
+            - Trade Journal with CSV export
+            - Backtester and multi-pair scanner
+
+            > ⚠ For educational purposes only. Not financial advice.
+          files: release-assets/**/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
