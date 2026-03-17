@@ -1,0 +1,110 @@
+{
+  "name": "a3-elite",
+  "version": "2.0.0",
+  "description": "A3-Elite Market Intelligence — ICT Smart Money Concepts Analysis Platform",
+  "main": "main.js",
+  "author": {
+    "name": "A3EN",
+    "email": "contact@a3en.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build:all": "electron-builder -mwl",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {},
+  "build": {
+    "appId": "com.a3en.a3elite",
+    "productName": "A3-Elite",
+    "copyright": "Copyright © 2024 A3EN",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build-resources"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*"
+    ],
+    "extraResources": [],
+
+    "win": {
+      "target": [
+        { "target": "nsis",    "arch": ["x64", "ia32"] },
+        { "target": "portable","arch": ["x64"] }
+      ],
+      "icon": "build-resources/icon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "publisherName": "A3EN"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "installerIcon": "build-resources/icon.ico",
+      "uninstallerIcon": "build-resources/icon.ico",
+      "installerHeaderIcon": "build-resources/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "A3-Elite",
+      "include": "build-resources/installer.nsh"
+    },
+
+    "mac": {
+      "target": [
+        { "target": "dmg",  "arch": ["x64", "arm64"] },
+        { "target": "zip",  "arch": ["x64", "arm64"] }
+      ],
+      "icon": "build-resources/icon.icns",
+      "category": "public.app-category.finance",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build-resources/entitlements.mac.plist",
+      "entitlementsInherit": "build-resources/entitlements.mac.plist",
+      "darkModeSupport": true,
+      "minimumSystemVersion": "10.13.0"
+    },
+    "dmg": {
+      "title": "A3-Elite ${version}",
+      "icon": "build-resources/icon.icns",
+      "background": "build-resources/dmg-background.png",
+      "window": { "width": 540, "height": 380 },
+      "contents": [
+        { "x": 130, "y": 220, "type": "file" },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    },
+
+    "linux": {
+      "target": [
+        { "target": "AppImage", "arch": ["x64", "arm64"] },
+        { "target": "deb",      "arch": ["x64", "arm64"] },
+        { "target": "rpm",      "arch": ["x64"] },
+        { "target": "snap",     "arch": ["x64"] }
+      ],
+      "icon": "build-resources/icons",
+      "category": "Finance",
+      "description": "A3-Elite Market Intelligence Platform",
+      "maintainer": "A3EN <contact@a3en.com>"
+    },
+    "snap": {
+      "summary": "A3-Elite Market Intelligence",
+      "description": "Professional trading analysis powered by ICT Smart Money Concepts",
+      "grade": "stable",
+      "confinement": "strict"
+    },
+    "deb": {
+      "depends": ["libgtk-3-0", "libnotify4", "libnss3", "libxss1", "libxtst6", "xdg-utils", "libatspi2.0-0", "libuuid1", "libsecret-1-0"]
+    }
+  }
+}

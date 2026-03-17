@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#060b14"/>
+  <rect width="512" height="512" rx="80" fill="url(#bg)"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1520"/>
+      <stop offset="100%" stop-color="#060b14"/>
+    </linearGradient>
+    <linearGradient id="ac" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <!-- Candlestick chart bars -->
+  <rect x="80"  y="300" width="36" height="100" rx="4" fill="#10d990" opacity=".9"/>
+  <line x1="98"  y1="260" x2="98"  y2="300" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <line x1="98"  y1="400" x2="98"  y2="430" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <rect x="148" y="200" width="36" height="140" rx="4" fill="#10d990" opacity=".9"/>
+  <line x1="166" y1="160" x2="166" y2="200" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <line x1="166" y1="340" x2="166" y2="370" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <rect x="216" y="260" width="36" height="80"  rx="4" fill="#ff3c5a" opacity=".9"/>
+  <line x1="234" y1="220" x2="234" y2="260" stroke="#ff3c5a" stroke-width="6" stroke-linecap="round"/>
+  <line x1="234" y1="340" x2="234" y2="380" stroke="#ff3c5a" stroke-width="6" stroke-linecap="round"/>
+  <rect x="284" y="180" width="36" height="120" rx="4" fill="#10d990" opacity=".9"/>
+  <line x1="302" y1="130" x2="302" y2="180" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <line x1="302" y1="300" x2="302" y2="340" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <rect x="352" y="230" width="36" height="100" rx="4" fill="#ff3c5a" opacity=".9"/>
+  <line x1="370" y1="180" x2="370" y2="230" stroke="#ff3c5a" stroke-width="6" stroke-linecap="round"/>
+  <line x1="370" y1="330" x2="370" y2="370" stroke="#ff3c5a" stroke-width="6" stroke-linecap="round"/>
+  <rect x="420" y="140" width="36" height="160" rx="4" fill="#10d990" opacity=".9"/>
+  <line x1="438" y1="90"  x2="438" y2="140" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <line x1="438" y1="300" x2="438" y2="340" stroke="#10d990" stroke-width="6" stroke-linecap="round"/>
+  <!-- A3 text -->
+  <text x="256" y="490" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="52" fill="url(#ac)" letter-spacing="8">A3▸ELITE</text>
+</svg>
